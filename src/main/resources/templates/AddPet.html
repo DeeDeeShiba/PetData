@@ -30,6 +30,9 @@
             <label for="pet_type" class="group_label">Pet Type</label><br>
             <select id="pet_type" th:field="*{petType}">
                 <option th:each="p: ${programs}" th:value="${p}" th:text="${p}">--- Select Pet Type ---</option>
+                <option th:each="p: ${programs}" th:value="${p}" th:text="${p}">Dog</option>
+                <option th:each="p: ${programs}" th:value="${p}" th:text="${p}">Cat</option>
+                <option th:each="p: ${programs}" th:value="${p}" th:text="${p}">Rabbit</option>
             </select>
             <span th:if="${#fields.hasErrors('petType')}"
                   class="error">&larr;&nbsp;<span th:errors="*{petType}">Pet Type Error</span></span>
