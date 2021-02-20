@@ -8,8 +8,17 @@
 <main>
     <h1>ADD YOUR PET BELOW!</h1>
     <form method="post"
-    th:action="">
+        th:action="@{InsertPet}" action="ConfirmInsert.html"
+        th:object="${form}">
 
+        <div th:if ="${#fields.errors('*')}/">
+            <h3 class = "Error">Input error</h3>
+            <ul>
+                <li th:each="e: ${fields.errors('*')} th:text="${e}"
+                class = "error">Input Error</li>
+            </ul>
+        </div>
+        <h2>Pet Name</h2>
     </form>
 </main>
 
