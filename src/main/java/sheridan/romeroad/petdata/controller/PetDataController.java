@@ -9,9 +9,12 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import sheridan.romeroad.petdata.data.PetDataService;
 import sheridan.romeroad.petdata.model.PetForm;
+
+import java.util.List;
 
 @Controller
 public class PetDataController {
@@ -79,6 +82,97 @@ public class PetDataController {
             return "DataNotFound";
         }
     }
+    @RequestMapping("/ListPet")
+    public ModelAndView listPet() {
+        logger.trace("listPet() is called");
+        List<PetForm> list = petDataService.getAllPetForms();
+        return new ModelAndView("ListPet",
+                "pet", list);
+    }
+    @RequestMapping("/DeleteAll")
+    public String deleteAll(){
+        logger.trace("deleteAll() is called");
+        petDataService.deleteAllPetForms();
+        return "redirect:ListPet";
+    }
+    @RequestMapping("PetDetails/{id}")
+    public String petDetails(@PathVariable String id, Model model){
+        logger.trace("petDetails() is called");
+        try {
+            PetForm form = petDataService.getPetForm(Integer.parseInt(id));
+            if (form != null) {
+                model.addAttribute("pet", form);
+                return "PetDetails";
+            } else {
+                logger.trace("no data for this id=" + id);
+                return "DataNotFound";
+            }
+        } catch (NumberFormatException e) {
+            logger.trace("the id is missing or not an integer");
+            return "DataNotFound";
+        }
+    }
 
-
+    @RequestMapping("/DeletePet")
+    public String deletePet(@RequestParam String id, Model model) {
+        logger.trace("deletePet() is called");
+        try {
+            PetForm form = petDataService.getPetForm(Integer.parseInt(id));
+            if (form != null) {
+                model.addAttribute("pet", form);
+                return "DeletePet";
+            } else {
+                return "redirect:ListPet";
+            }
+        } catch (NumberFormatException e) {
+            return "redirect:ListPet";
+        }
+    }
+    @RequestMapping("/RemovePet")
+    public String removePet(@RequestParam String id) {
+        logger.trace("removePet() is called");
+        try {
+            petDataService.deletePetForm(Integer.parseInt(id));
+        } catch (NumberFormatException e) {
+            logger.trace("the id is missing or not an integer");
+        }
+        return "redirect:ListPet";
+    }
+    @RequestMapping("/EditPet")
+    public String editPet(@RequestParam String id, Model model) {
+        logger.trace("editPet() is called");
+        try {
+            PetForm form = petDataService.getPetForm(Integer.parseInt(id));
+            if (form != null) {
+                model.addAttribute("form", form);
+                model.addAttribute("programs", programs);
+                return "EditPet";
+            } else {
+                logger.trace("no data for this id=" + id);
+                return "redirect:ListPet";
+            }
+        } catch (NumberFormatException e) {
+            logger.trace("the id is missing or not an integer");
+            return "redirect:ListPet";
+        }
+    }
+    @RequestMapping("/UpdatePet")
+    public String updatePet(
+            @Validated @ModelAttribute("form") PetForm form,
+            BindingResult bindingResult,
+            Model model) {
+        logger.trace("updatePet() is called");
+        // checking for the input validation errors
+        if (bindingResult.hasErrors()) {
+            logger.trace("input validation errors");
+            //model.addAttribute("form", form);
+            model.addAttribute("programs", programs);
+            return "EditPet";
+        } else {
+            logger.trace("the user inputs are correct");
+            petDataService.updatePetForm(form);
+            logger.debug("id = " + form.getId());
+            return "redirect:PetDetails/" + form.getId();
+        }
+    }
 }
