@@ -21,7 +21,7 @@ public class PetDataController {
 
     private final Logger logger = LoggerFactory.getLogger(PetDataController.class);
 
-    private static final String[] programs = {
+    private static final String[] types = {
             "--- Select Your Pet Type ---",
             "Dog", "Cat", "Rabbit"};
 
@@ -44,7 +44,7 @@ public class PetDataController {
         ModelAndView modelAndView  =
                 new ModelAndView("AddPet",
                         "form", new PetForm());
-        modelAndView.addObject("programs", programs);
+        modelAndView.addObject("programs", types);
         return modelAndView;
     }
 
@@ -53,7 +53,7 @@ public class PetDataController {
             @Validated @ModelAttribute("form") PetForm form,BindingResult bindingResult, Model model){
         logger.trace("InsertPet() is called");
         if(bindingResult.hasErrors()){
-            model.addAttribute("programs", programs);
+            model.addAttribute("programs", types);
             return"AddPet";
         }
         else{
@@ -145,7 +145,7 @@ public class PetDataController {
             PetForm form = petDataService.getPetForm(Integer.parseInt(id));
             if (form != null) {
                 model.addAttribute("form", form);
-                model.addAttribute("programs", programs);
+                model.addAttribute("programs", types);
                 return "EditPet";
             } else {
                 logger.trace("no data for this id=" + id);
@@ -166,7 +166,7 @@ public class PetDataController {
         if (bindingResult.hasErrors()) {
             logger.trace("input validation errors");
             //model.addAttribute("form", form);
-            model.addAttribute("programs", programs);
+            model.addAttribute("programs", types);
             return "EditPet";
         } else {
             logger.trace("the user inputs are correct");
