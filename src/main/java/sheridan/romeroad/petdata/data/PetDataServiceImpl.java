@@ -13,7 +13,19 @@ public abstract class PetDataServiceImpl implements PetDataService{
     }
 
     private static void copyFormToEntity(PetForm form, PetEntity pet){
-        pet
+        //pet.getId()(form.getId());
+        pet.setPetName(form.getPetName());
+        pet.setPetType(form.getPetType());
+        pet.setPetGender(form.getPetGender());
+        pet.setPetVaccination(form.isPetVaccinated());
+    }
+
+    private static void copyEntityToForm(PetEntity pet, PetForm form){
+        form.setId(pet.getId());
+        form.setPetName(pet.getPetName());
+        form.setPetType(pet.getPetType());
+        form.setPetGender(pet.getPetGender());
+        form.setPetVaccination(pet.isPetVaccinated());
     }
 
 }

@@ -62,6 +62,5 @@ public class PetEntity implements Serializable{
     public void setPetVaccination(boolean petVaccination){
         this.petVaccination = petVaccination;
     }
-
 }
 
