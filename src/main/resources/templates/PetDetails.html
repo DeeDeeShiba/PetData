@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Pet Details</title>
+</head>
+<body>
+<main>
+    <h1>Student Details</h1>
+    <div th:object="${pet}">
+        <p>
+            <label class="group_label">Pet Name:</label>
+            <span class="output" th:text="*{petName}">Coco</span>
+        </p>
+        <p>
+            <label class="group_label">Pet Gender:</label>
+            <span class="output" th:text="*{petGender}">Female</span>
+        </p>
+        <p>
+            <label class="group_label">Pet Type:</label>
+            <span class="output" th:text="*{petType}">Dog</span>
+        </p>
+        <p>
+            <label class="group_label">Pet Vaccination:</label>
+            <span class="output" th:text="*{petVaccinated}">yes</span>
+        </p>
+    </div>
+    <p><a href="EditPet.html" th:href="@{../EditPet(id=${pet.id})}">Edit Pet</a></p>
+    <p><a href="Index.html" th:href="@{../Index}">Index</a></p>
+    <p><a href="AddPet.html" th:href="@{../AddPet}">Add Pet</a></p>
+    <p><a href="ListPet.html" th:href="@{../ListPet}">List Pet</a></p>
+</main>
+</body>
+</html>
